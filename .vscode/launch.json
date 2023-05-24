@@ -1,0 +1,10 @@
+{
+  "configurations": [
+    {
+      "name": "Attach to Process",
+      "type": "node",
+      "request": "attach",
+      "port": 9229
+    }
+  ]
+}
