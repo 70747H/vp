@@ -9,6 +9,9 @@ import {
 import { mock } from 'jest-mock-extended';
 import { VouchersRepository } from './vouchers.repository';
 import { ConsumeVoucherDto } from './dto/consume-voucher.dto';
+import { getRepositoryToken } from '@nestjs/typeorm';
+import Voucher from './entities/voucher.entity';
+import { UpdateResult } from 'typeorm';
 
 const repositoryMock = mock<VouchersRepository>();
 
@@ -21,14 +24,14 @@ describe('VouchersService', () => {
       providers: [
         VouchersService,
         {
-          provide: VouchersRepository,
+          provide: getRepositoryToken(Voucher),
           useValue: repositoryMock,
         },
       ],
     }).compile();
 
     service = module.get<VouchersService>(VouchersService);
-    repo = module.get<VouchersRepository>(VouchersRepository);
+    repo = module.get<VouchersRepository>(getRepositoryToken(Voucher));
   });
 
   afterEach(() => {
@@ -65,9 +68,15 @@ describe('VouchersService', () => {
         code: 'V1StGXR8_Z5jdHi6B-myT',
         email: 'hassan@eaxmple.co',
       };
-      repositoryMock.save.mockResolvedValue(consumedVoucher);
+      repositoryMock.update.mockResolvedValue({
+        raw: '',
+        affected: 1,
+        generatedMaps: [{}],
+      });
+      repositoryMock.findOne.mockResolvedValueOnce(consumedVoucher);
       const actual = await service.consume(consumeVoucherDto);
-      expect(repo.save).toHaveBeenCalledTimes(1);
+      expect(repo.update).toHaveBeenCalledTimes(1);
+      expect(repo.findOne).toHaveBeenCalledTimes(1);
       expect(typeof actual).toBe('number');
     });
   });

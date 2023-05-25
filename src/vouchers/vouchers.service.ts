@@ -9,12 +9,16 @@ import { ConsumeVoucherDto } from './dto/consume-voucher.dto';
 import { VouchersResponseDto } from './dto/list-vouchers-response.dto';
 import { VouchersRepository } from './vouchers.repository';
 import Voucher from './entities/voucher.entity';
+import { InjectRepository } from '@nestjs/typeorm';
 
 @Injectable()
 export class VouchersService {
   private readonly logger = new Logger(VouchersService.name);
 
-  constructor(private readonly voucherRepository: VouchersRepository) {}
+  constructor(
+    @InjectRepository(Voucher)
+    private readonly voucherRepository: VouchersRepository,
+  ) {}
 
   async create(createVoucherDto: CreateVoucherDto): Promise<Voucher> {
     try {
@@ -35,11 +39,14 @@ export class VouchersService {
   async consume(consumeVoucherDto: ConsumeVoucherDto): Promise<number> {
     try {
       const { code } = consumeVoucherDto;
+      this.voucherRepository.update(
+        { code },
+        { isUsed: true, usedAt: new Date().toISOString() },
+      );
       return (
-        await this.voucherRepository.save({
-          code,
-          isUsed: true,
-          usedAt: new Date().toISOString(),
+        await this.voucherRepository.findOne({
+          where: { code },
+          relations: ['offer'],
         })
       ).offer.discountPercentage;
     } catch (error) {

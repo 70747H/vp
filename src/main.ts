@@ -7,8 +7,6 @@ import { useContainer } from 'class-validator';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
-  useContainer(app.select(AppModule), { fallbackOnErrors: true });
-
   const options = new DocumentBuilder()
     .setTitle('Voucher Pool')
     .setDescription('Vaoucher Pool NestJs App')
@@ -40,5 +38,7 @@ async function bootstrap() {
         'NestApplication',
       ),
     );
+
+  useContainer(app.select(AppModule), { fallbackOnErrors: true });
 }
 bootstrap();

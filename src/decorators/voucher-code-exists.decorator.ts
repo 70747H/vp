@@ -16,7 +16,9 @@ export class VoucherCodeExistsRule implements ValidatorConstraintInterface {
   ) {}
   async validate(value: string): Promise<boolean> {
     try {
-      await this.voucherRepository.findOneOrFail({ where: { code: value } });
+      await this.voucherRepository.findOneOrFail({
+        where: { code: value },
+      });
     } catch (error) {
       return false;
     }

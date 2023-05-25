@@ -8,7 +8,7 @@ export class Init21684261286452 implements MigrationInterface {
       `CREATE TABLE "users" ("id" SERIAL NOT NULL, "name" character varying NOT NULL, "email" character varying NOT NULL, CONSTRAINT "UQ_97672ac88f789774dd47f7c8be3" UNIQUE ("email"), CONSTRAINT "PK_a3ffb1c0c8416b9fc6f907b7433" PRIMARY KEY ("id"))`,
     );
     await queryRunner.query(
-      `CREATE TABLE "vouchers" ("id" SERIAL NOT NULL, "code" character varying NOT NULL, "is_used" boolean, "expire_at" TIMESTAMP NOT NULL, "used_at" TIMESTAMP, "userId" integer, "offerId" integer, CONSTRAINT "UQ_efc30b2b9169e05e0e1e19d6dd6" UNIQUE ("code"), CONSTRAINT "PK_ed1b7dd909a696560763acdbc04" PRIMARY KEY ("id"))`,
+      `CREATE TABLE "vouchers" ("id" SERIAL NOT NULL, "code" character varying NOT NULL, "is_used" boolean, "expire_at" TIMESTAMP, "used_at" TIMESTAMP, "userId" integer, "offerId" integer, CONSTRAINT "UQ_efc30b2b9169e05e0e1e19d6dd6" UNIQUE ("code"), CONSTRAINT "PK_ed1b7dd909a696560763acdbc04" PRIMARY KEY ("id"))`,
     );
     await queryRunner.query(
       `CREATE UNIQUE INDEX "IDX_9cd97f49480761f2788d0edc1b" ON "vouchers" ("userId", "offerId") `,

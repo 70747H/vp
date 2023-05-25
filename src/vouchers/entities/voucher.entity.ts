@@ -20,7 +20,7 @@ export default class Voucher {
   @Column({ nullable: true, default: false, name: 'is_used' })
   isUsed: boolean;
 
-  @Column({ type: 'timestamp', name: 'expire_at' })
+  @Column({ type: 'timestamp', name: 'expire_at', nullable: true })
   expireAt: Date;
 
   @Column({ type: 'timestamp', name: 'used_at', nullable: true })

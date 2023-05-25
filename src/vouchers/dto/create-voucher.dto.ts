@@ -1,4 +1,3 @@
-import { ApiProperty } from '@nestjs/swagger';
 import { IsISO8601, IsNotEmpty, IsNumber } from 'class-validator';
 
 export class CreateVoucherDto {

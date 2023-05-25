@@ -1,10 +1,16 @@
-import { Injectable } from '@nestjs/common';
 import { Repository } from 'typeorm';
 import Voucher from './entities/voucher.entity';
 
-@Injectable()
-export class VouchersRepository extends Repository<Voucher> {
-  findVouchersWithUsersAndOffers(email?: string) {
+export interface VouchersRepository extends Repository<Voucher> {
+  this: Repository<Voucher>;
+  findVouchersWithUsersAndOffers(email: string): Promise<any[]>;
+}
+
+export const customVouchersRepository: Pick<
+  VouchersRepository,
+  'findVouchersWithUsersAndOffers'
+> = {
+  findVouchersWithUsersAndOffers(email: string) {
     const query = this.createQueryBuilder('vouchers')
       .innerJoinAndSelect('users', 'users', 'vouchers.userId = users.id')
       .innerJoinAndSelect('offers', 'offers', 'vouchers.offerId = offers.id')
@@ -21,5 +27,5 @@ export class VouchersRepository extends Repository<Voucher> {
     if (!!email) query.where('users.email = :email', { email });
 
     return query.getRawMany();
-  }
-}
+  },
+};

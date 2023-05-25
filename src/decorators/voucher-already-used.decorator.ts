@@ -19,12 +19,12 @@ export class VoucherCodeAlreadyUsedRule
   async validate(value: string): Promise<boolean> {
     try {
       await this.voucherRepository.findOneOrFail({
-        where: { code: value, isUsed: false },
+        where: { code: value, isUsed: true },
       });
     } catch (error) {
-      return false;
+      return true;
     }
-    return true;
+    return false;
   }
   defaultMessage?(): string {
     return `Voucher already used.`;
