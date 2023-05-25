@@ -10,13 +10,21 @@ export class Init1683927259647 implements MigrationInterface {
       queryRunner.manager.insert(User, [
         {
           name: 'Hassan',
-          email: 'hassan@eaxmple.co',
+          email: 'hassan@eaxmple.com',
+        },
+        {
+          name: 'Hala',
+          email: 'hala@example.com',
         },
       ]),
       queryRunner.manager.insert(Offer, [
         {
           name: 'offer-50',
           discountPercentage: 0.5,
+        },
+        {
+          name: 'offer-70',
+          discountPercentage: 0.7,
         },
       ]),
       queryRunner.manager.insert(Voucher, [

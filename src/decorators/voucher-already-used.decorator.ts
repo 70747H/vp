@@ -16,10 +16,10 @@ export class VoucherCodeAlreadyUsedRule
     @InjectRepository(Voucher)
     private readonly voucherRepository: Repository<Voucher>,
   ) {}
-  async validate(value: string): Promise<boolean> {
+  async validate(code: string): Promise<boolean> {
     try {
       await this.voucherRepository.findOneOrFail({
-        where: { code: value, isUsed: true },
+        where: { code, isUsed: true },
       });
     } catch (error) {
       return true;

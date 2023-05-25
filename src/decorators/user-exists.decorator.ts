@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import {
+  ValidationArguments,
   ValidatorConstraint,
   ValidatorConstraintInterface,
 } from 'class-validator';
@@ -15,9 +16,16 @@ export class UserExistsRule implements ValidatorConstraintInterface {
     private readonly userRepository: Repository<User>,
   ) {}
 
-  async validate(value: string): Promise<boolean> {
+  async validate(
+    value: string,
+    validationArguments?: ValidationArguments,
+  ): Promise<boolean> {
     try {
-      await this.userRepository.findOneOrFail({ where: { email: value } });
+      let filter;
+      if (typeof value === 'number') filter = { id: value };
+      else if (typeof value === 'string') filter = { email: value };
+      else return false;
+      await this.userRepository.findOneOrFail({ where: filter });
     } catch (error) {
       return false;
     }

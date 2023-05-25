@@ -14,10 +14,10 @@ export class VoucherCodeExistsRule implements ValidatorConstraintInterface {
     @InjectRepository(Voucher)
     private readonly voucherRepository: Repository<Voucher>,
   ) {}
-  async validate(value: string): Promise<boolean> {
+  async validate(code: string): Promise<boolean> {
     try {
       await this.voucherRepository.findOneOrFail({
-        where: { code: value },
+        where: { code },
       });
     } catch (error) {
       return false;

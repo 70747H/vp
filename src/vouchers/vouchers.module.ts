@@ -14,9 +14,11 @@ import { VoucherCodeAlreadyUsedRule } from 'src/decorators/voucher-already-used.
 import { UserExistsRule } from 'src/decorators/user-exists.decorator';
 import { UsersModule } from 'src/users/users.module';
 import User from 'src/users/entities/user.entity';
+import { OfferExistsRule } from 'src/decorators/offer-exists.decorator';
+import Offer from 'src/offers/entities/offer.entity';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Voucher, User]), UsersModule],
+  imports: [TypeOrmModule.forFeature([Voucher, User, Offer]), UsersModule],
   controllers: [VouchersController],
   providers: [
     {
@@ -32,6 +34,7 @@ import User from 'src/users/entities/user.entity';
     VoucherCodeExistsRule,
     VoucherCodeAlreadyUsedRule,
     UserExistsRule,
+    OfferExistsRule,
   ],
 })
 export class VouchersModule {}
